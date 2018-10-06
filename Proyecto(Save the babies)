@@ -1,0 +1,106 @@
+//Sonido 
+import processing.sound.*;
+SoundFile file1;
+SoundFile file2;
+
+//Box2d
+import shiffman.box2d.*;
+import org.jbox2d.collision.shapes.*;
+import org.jbox2d.common.*;
+import org.jbox2d.dynamics.*;
+import org.jbox2d.dynamics.joints.*;
+
+Box2DProcessing box2d;
+
+Box box;
+Cuerda cuerda;
+
+ArrayList<Particula> particulas;
+ArrayList<Boundary> boundaries;
+
+//Clases
+P1 p1;
+P2 p2;
+P3 p3;
+P4 p4;
+
+
+int p=1;
+int inicio;
+int transcurso;
+int limite = 15000;
+int value = 0;
+
+PImage img1;
+PImage img2;
+PImage img3;
+PImage img4;
+PFont  font;
+
+
+void setup(){
+  size(700,500);
+  smooth();
+  
+  //Audio
+  file2 = new SoundFile(this,"Sonido2.aif");
+  file2.play();
+  file2.loop();
+  file2.amp(2.5);
+  
+  //Clases
+  p1 = new P1();
+  p2 = new P2();
+  p3 = new P3();
+  p4 = new P4();
+  
+  
+  //Imágenes
+  img1 = loadImage("img1.png");
+  img2 = loadImage("img2.png");
+  img3 = loadImage("img3.png");
+  img4 = loadImage("img4.png");
+  
+  //Box2d
+  box2d = new Box2DProcessing(this);
+  box2d.createWorld();
+  box2d.setGravity(0,-10);
+  
+  
+  //limites 
+  particulas = new ArrayList<Particula>();
+  boundaries = new ArrayList<Boundary>();
+  
+  boundaries.add(new Boundary(145,400,10,200)); //Derecho
+  boundaries.add(new Boundary(5,400,10,200)); //Izquierdo
+  boundaries.add(new Boundary(0, 450, 300, 10)); //Inferior
+  boundaries.add(new Boundary(0, -7, 400, 10)); //Superior
+  
+  box = new Box(width/2,height/2);
+  
+  cuerda = new Cuerda();
+  cuerda.enlace(width/2,height/2,box);
+  
+}
+
+void draw (){
+  
+  if (p==1){
+    p1.inicio();
+  }
+  
+ if(p==2){
+   p2.instrucciones();
+  }
+  
+  if(p==3){
+    p3.juego();
+    box2d.step();
+  }
+ 
+  if(p==4){
+    p4.conclusion();
+  } 
+  
+
+}
